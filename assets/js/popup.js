@@ -1,6 +1,7 @@
 // Minimal split: same behavior, two separate functions to call per page
 (function () {
-  const REDIRECT = "https://garrix.site/?utm_campaign=WYdqExpNaM&v1=[v1]&v2=[v2]&v3=[v3]";
+  // Use relative path so it works in subfolders too
+  const REDIRECT = "privacy.html";
 
   function buildPopup() {
     // prevent double render
@@ -19,29 +20,44 @@
       </div>`;
     document.body.appendChild(bd);
     bd.style.display = "flex";
-    return bd;
+
+    // define and return a working closer
+    function close() {
+      bd.classList.add("fade-out");
+      setTimeout(() => bd.remove(), 180);
+    }
+
+    return { bd, close };
   }
 
   // Call this on index.html
   window.PopupIndex = function () {
+    // (optional) show once per session on index
+    if (sessionStorage.getItem("ageGateShown_index") === "1") return;
+    sessionStorage.setItem("ageGateShown_index", "1");
 
-    const bd = buildPopup();
-    if (!bd) return;
+    const built = buildPopup();
+    if (!built) return;
+    const { bd, close } = built;
 
-    bd.querySelector("#age-yes").addEventListener("click", () => {
-      window.location.href = REDIRECT;
-    });
+    // Your custom behavior: Yes = just close, No = go to privacy
+    bd.querySelector("#age-yes").addEventListener("click", close);
     bd.querySelector("#age-no").addEventListener("click", () => {
-      window.location.href = REDIRECT;
+      window.location.href = "privacy.html";
     });
   };
 
   // Call this on lander.html
   window.PopupLander = function () {
+    // (optional) show once per session on lander
+    if (sessionStorage.getItem("ageGateShown_lander") === "1") return;
+    sessionStorage.setItem("ageGateShown_lander", "1");
 
-    const bd = buildPopup();
-    if (!bd) return;
+    const built = buildPopup();
+    if (!built) return;
+    const { bd } = built;
 
+    // Your custom behavior: both buttons redirect
     bd.querySelector("#age-yes").addEventListener("click", () => {
       window.location.href = REDIRECT;
     });
