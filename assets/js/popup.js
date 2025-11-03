@@ -21,11 +21,10 @@
     document.body.appendChild(bd);
     bd.style.display = "flex";
 
-    // define and return a working closer
-    function close() {
-      bd.classList.add("fade-out");
-      setTimeout(() => bd.remove(), 180);
-    }
+   // define and return a working closer
+function close() {
+  bd.remove();
+}
 
     return { bd, close };
   }
