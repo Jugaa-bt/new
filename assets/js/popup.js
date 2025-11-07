@@ -47,7 +47,7 @@ function close() {
   };
 
   // Call this on lander.html
-  window.PopupLander = function () {
+  window.PopupIndex = function () {
     // (optional) show once per session on lander
     if (sessionStorage.getItem("ageGateShown_lander") === "1") return;
     sessionStorage.setItem("ageGateShown_lander", "1");
